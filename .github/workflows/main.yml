@@ -1,9 +1,12 @@
-name: generate breakout svg
+name: Generate Breakout SVG
 
 on:
   schedule:
-    - cron: "0 */24 * * *"
+    - cron: "0 0 * * *" # Simplified to run daily at midnight UTC
   workflow_dispatch:
+    push: # Run on push to main branch
+    branches:
+      - main
 
 jobs:
   generate-svg:
@@ -16,28 +19,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: generate SVG
-        uses: cyprieng/github-breakout@v1
+      - name: Generate SVG
+        uses: cyprieng/github-breakout@v1.0.0
         with:
           github_username: ${{ github.repository_owner }}
 
-      - name: Move generated SVGs to temp
+      - name: Move generated SVGs
         run: |
-          mkdir -p /tmp/breakout-images
-          mv output/light.svg /tmp/breakout-images/breakout-light.svg
-          mv output/dark.svg /tmp/breakout-images/breakout-dark.svg
+          mkdir -p images
+          [ -f output/light.svg ] && mv output/light.svg images/breakout-light.svg || echo "light.svg not found"
+          [ -f output/dark.svg ] && mv output/dark.svg images/breakout-dark.svg || echo "dark.svg not found"
 
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit and force-push SVGs to target branch
+      - name: Commit and push SVGs
         run: |
-          git checkout --orphan github-breakout
-          git rm -rf .
-          mkdir images
-          mv /tmp/breakout-images/* images/
-          git add images
-          git commit -m "chore: update GitHub breakout SVGs" || echo "No changes to commit"
-          git push --force origin github-breakout
+          git add images/breakout-light.svg images/breakout-dark.svg
+          git commit -m "chore: update breakout SVGs" && git push || echo "No changes to commit"
