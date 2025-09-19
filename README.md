@@ -12,14 +12,9 @@
 </pre>
 </p>
 
+
 <picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://github.com/ankalaric/ankalaric/blob/github-breakout/images/breakout-dark.svg"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://github.com/ankalaric/ankalaric/blob/github-breakout/images/breakout-light.svg"
-  />
-  <img alt="Breakout Game" src="{YOUR IMAGE URL}/images/breakout-light.svg" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ankalaric/ankalaric/output/pacman-contribution-graph-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ankalaric/ankalaric/output/pacman-contribution-graph.svg">
+    <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/ankalaric/ankalaric/output/pacman-contribution-graph.svg">
 </picture>
